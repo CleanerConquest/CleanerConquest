@@ -1,0 +1,1031 @@
+@font-face {
+    font-family: "NotoKufiArabic";
+    src: url("./Fonts/ArbFONTS-NotoKufiArabic-Regular.ttf");
+}
+
+@font-face {
+    font-family: "NotoKufiArabic";
+    src: url("./Fonts/ArbFONTS-NotoKufiArabic-Bold.ttf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "DroidNaskh";
+    src: url("./Fonts/DroidNaskh-Regular.ttf");
+}
+
+@font-face {
+    font-family: "DroidNaskh";
+    src: url("./Fonts/DroidNaskh-Bold.ttf");
+    font-weight: bold;
+}
+button.p-button.p-component {
+    font-family: Arial !important;
+}
+button.p-button.p-component.routesBtnIconButton {
+    font-size: 30px !important;
+}
+button.p-button.p-component.routesBtnIconButtonInline {
+    font-size: 20px !important;
+}
+button.p-button.p-component.buttonBarBtn {
+    font-size: 25px !important;
+}
+body {
+    font-family: "DroidNaskh", Arial;
+    font-size: 12px !important;
+}
+body .p-component {
+    font-family: "DroidNaskh", Arial !important;
+    font-size: 12px !important;
+}
+body .p-link {
+    font-family: "DroidNaskh", Arial !important;
+    font-size: 12px !important;
+}
+.layout-wrapper.layout-menu-light .layout-menu-container .layout-menu li a.active-menuitem-routerlink,
+.layout-wrapper.layout-menu-light .layout-menu-container .layout-menu li button.active-menuitem-routerlink {
+    font-weight: bold !important;
+}
+
+.layout-wrapper.layout-menu-light .layout-menu-container .layout-menu li a .layout-menuitem-text,
+.layout-wrapper.layout-menu-light .layout-menu-container .layout-menu li button .layout-menuitem-text {
+    font-weight: bold !important;
+}
+label {
+    font-family: NotoKufiArabic !important;
+}
+
+.p-inputgroup {
+    align-items: stretch !important;
+}
+
+.datatable-demo .p-datatable-responsive .p-datatable-tbody > tr.p-datatable-row > td:last-child .p-column-title {
+    display: none;
+}
+
+.carousel-demo .p-carousel .p-carousel-content .p-carousel-item .car-details > .p-grid {
+    border-radius: 3px;
+    margin: 0.3em;
+    text-align: center;
+    padding: 2em 0 2.25em 0;
+}
+
+.carousel-demo .p-carousel .p-carousel-content .p-carousel-item .car-data .car-title {
+    font-weight: 700;
+    font-size: 20px;
+    margin-top: 24px;
+}
+
+.carousel-demo .p-carousel .p-carousel-content .p-carousel-item .car-data .car-subtitle {
+    margin: 0.25em 0 2em 0;
+}
+
+.carousel-demo .p-carousel .p-carousel-content .p-carousel-item .car-data button {
+    margin-left: 0.5em;
+}
+
+.carousel-demo .p-carousel .p-carousel-content .p-carousel-item .car-data button:first-child {
+    margin-left: 0;
+}
+
+.dataview-demo .p-dataview .car-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2em;
+}
+
+.dataview-demo .p-dataview .car-details > div {
+    display: flex;
+    align-items: center;
+}
+
+.dataview-demo .p-dataview .car-details > div img {
+    margin-right: 14px;
+}
+
+.dataview-demo .p-dataview .car-detail {
+    padding: 0 1em 1em 1em;
+    margin: 1em;
+}
+
+@media (max-width: 1024px) {
+    .dataview-demo .p-dataview .car-details img {
+        width: 75px;
+    }
+}
+
+/*original App.css*/
+
+/*prime extra styles*/
+
+/*menu for small size*/
+
+.layout-wrapper .layout-menu-container .layout-menu li a,
+.layout-wrapper .layout-menu-container .layout-menu li button {
+    display: flex !important;
+}
+
+/*dialog header, this should already be in the theme/primereact 5, but it may take a while
+for it to be implemented in roma(since roma is for prime 4.0.0 still...), so I wrote it inline*/
+
+.p-dialog .p-dialog-header {
+    border-bottom: 0 none;
+    background: #ffffff;
+    color: #495057;
+    padding: 1.5rem;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    flex-shrink: 0;
+}
+
+.p-dialog,
+.p-dialog-mask.p-component-overlay {
+    pointer-events: auto;
+}
+
+.p-dialog .p-dialog-header-icon,
+.p-dialog .p-dialog-header-icons {
+    display: flex;
+    align-items: center;
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon {
+    width: 2rem;
+    height: 2rem;
+    color: #6c757d;
+    border: 0 none;
+    background: transparent;
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+    margin-right: 0.5rem;
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon:enabled:hover {
+    color: #495057;
+    border-color: transparent;
+    background: #e9ecef;
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem #a6d5fa;
+}
+
+/*ovelay panels*/
+
+.p-overlaypanel:after,
+.p-overlaypanel:before {
+    right: 0.5em !important;
+}
+
+.p-overlaypanel:before {
+    margin-right: -2px;
+}
+
+/*toast*/
+
+.p-toast-detail {
+    white-space: pre-wrap;
+}
+
+/*all the upcoming should be in the theme, but since roma doesn't have toasts(it's still in primereact 4.0.0 
+instead of prime5.0.0, I had to copy these from there... we just need to give the toast the direction: ltr 
+property from below, the rest is unnecessary)*/
+
+.p-toast .p-toast-message {
+    margin: 0 0 1rem 0;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 3px;
+    direction: ltr;
+    /*this should stay*/
+}
+
+.p-toast-message-enter-done {
+    -webkit-transform: none;
+    transform: none;
+}
+
+.p-toast .p-toast-message .p-toast-message-content {
+    padding: 1rem;
+    border-width: 0 0 0 6px;
+}
+
+.p-toast .p-toast-message .p-toast-message-content .p-toast-message-icon {
+    font-size: 2rem;
+}
+
+.p-toast .p-toast-message .p-toast-message-content .p-toast-message-text {
+    /*this should stay*/
+    margin: 0 1rem 0 0;
+}
+
+.p-toast-message-text {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+
+.p-toast .p-toast-message .p-toast-icon-close {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: transparent;
+    transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.p-toast-icon-close.p-link {
+    cursor: pointer;
+}
+
+.p-toast-icon-close {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.p-toast .p-toast-message.p-toast-message-info .p-toast-message-icon,
+.p-toast .p-toast-message.p-toast-message-info .p-toast-icon-close {
+    color: #044868;
+}
+
+.p-toast .p-toast-message .p-toast-icon-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.p-toast .p-toast-message .p-toast-icon-close:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem #a6d5fa;
+}
+
+.p-toast .p-toast-message.p-toast-message-info {
+    background: #b3e5fc;
+    border: solid #0891cf;
+    border-width: 0 0 0 6px;
+    color: #044868;
+}
+
+.p-toast .p-toast-message.p-toast-message-info .p-toast-message-icon,
+.p-toast .p-toast-message.p-toast-message-info .p-toast-icon-close {
+    color: #044868;
+}
+
+.p-toast .p-toast-message.p-toast-message-success {
+    background: #c8e6c9;
+    border: solid #439446;
+    border-width: 0 0 0 6px;
+    color: #224a23;
+}
+
+.p-toast .p-toast-message.p-toast-message-success .p-toast-message-icon,
+.p-toast .p-toast-message.p-toast-message-success .p-toast-icon-close {
+    color: #224a23;
+}
+
+.p-toast .p-toast-message.p-toast-message-error {
+    background: #ffcdd2;
+    border: solid #e60017;
+    border-width: 0 0 0 6px;
+    color: #73000c;
+}
+
+.p-toast .p-toast-message.p-toast-message-error .p-toast-message-icon,
+.p-toast .p-toast-message.p-toast-message-error .p-toast-icon-close {
+    color: #73000c;
+}
+
+.p-toast .p-toast-message.p-toast-message-warn {
+    background: #ffecb3;
+    border: solid #d9a300;
+    border-width: 0 0 0 6px;
+    color: #6d5100;
+}
+
+.p-toast .p-toast-message.p-toast-message-warn .p-toast-message-icon,
+.p-toast .p-toast-message.p-toast-message-warn .p-toast-icon-close {
+    color: #6d5100;
+}
+
+/*colorpicker*/
+
+.p-colorpicker-overlay-panel {
+    left: unset !important;
+}
+
+.p-colorpicker-preview {
+    width: 2rem;
+    height: 2rem;
+}
+
+.p-colorpicker-panel {
+    background: #323232;
+    border-color: #191919;
+}
+
+.p-colorpicker-panel .p-colorpicker-color-handle,
+.p-colorpicker-panel .p-colorpicker-hue-handle {
+    border-color: #ffffff !important;
+}
+
+/*dialog*/
+
+.p-dialog .p-dialog-titlebar-icons {
+    direction: ltr;
+}
+
+/*buttons*/
+
+.p-button {
+    padding: 10px;
+}
+
+.p-button.p-button-text {
+    background-color: transparent;
+    border-color: transparent;
+    color: inherit;
+}
+
+.p-button.p-button-raised {
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+/*inputgroup button*/
+
+.p-inputgroup .p-button:last-child {
+    border-top-left-radius: 2px !important;
+    border-bottom-left-radius: 2px !important;
+    border-top-right-radius: unset !important;
+    border-bottom-right-radius: unset !important;
+}
+
+.p-inputgroup .p-button {
+    padding: unset;
+}
+
+/*radiobutton*/
+
+.p-radiobutton .p-radiobutton-box.p-highlight .p-radiobutton-icon {
+    background-color: #007ad9 !important;
+}
+
+.p-radiobutton {
+    margin: 0 0 0 0.5em !important;
+}
+
+.p-radiobutton .p-radiobutton-box.p-highlight {
+    border-color: #007ad9;
+    background-color: #ffffff !important;
+    color: #ffffff;
+}
+
+/*select button*/
+
+.p-selectbutton .p-button {
+    background: #ffffff !important;
+    border: 1px solid #ced4da !important;
+    color: #495057 !important;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s !important;
+}
+
+.p-selectbutton .p-button:not(.p-disabled):not(.p-highlight):hover {
+    background: #e9ecef !important;
+    border-color: #ced4da !important;
+    color: #495057 !important;
+}
+
+.p-selectbutton .p-button.p-highlight {
+    background: #2196f3 !important;
+    border-color: #2196f3 !important;
+    color: #ffffff !important;
+}
+
+.p-selectbutton .p-button.p-highlight:hover {
+    background: #0d89ec !important;
+    border-color: #0d89ec !important;
+    color: #ffffff !important;
+}
+
+/*Sidebar links*/
+
+a {
+    text-decoration: unset;
+}
+
+/*ddl*/
+
+.p-dropdown-panel .p-dropdown-items {
+    padding: 0.4em !important;
+}
+
+.p-dropdown-item {
+    width: 100% !important;
+    text-align: right !important;
+    float: right !important;
+}
+
+.p-dropdown-trigger {
+    left: 0 !important;
+    right: initial !important;
+    border-left: 0 !important;
+}
+
+.p-dropdown-label {
+    padding-right: 0.5em !important;
+}
+
+.p-dropdown .p-dropdown-clear-icon {
+    left: 2em !important;
+    right: unset !important;
+}
+
+/*multiselect*/
+
+.p-multiselect-label {
+    padding-right: 0.5em !important;
+}
+
+.p-multiselect-panel .p-multiselect-header .p-multiselect-close {
+    margin-right: 0.5rem;
+    margin-top: unset !important;
+    width: 2rem;
+    height: 2rem;
+    color: #6c757d !important;
+    border: 0 none;
+    background: transparent;
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.p-multiselect-panel .p-multiselect-header .p-multiselect-close:enabled:hover {
+    color: #495057;
+    border-color: transparent;
+    background: #e9ecef;
+}
+
+/*disabled*/
+
+.p-state-disabled,
+.p-widget:disabled {
+    opacity: 0.6 !important;
+}
+
+.p-disabled:not(.p-button):not(.p-colorpicker-preview) {
+    background-color: #f6f6f6 !important;
+}
+
+.p-disabled {
+    color: #000 !important;
+}
+
+/*spinner*/
+
+.p-spinner-button {
+    left: 0 !important;
+    right: unset !important;
+}
+
+.p-spinner-input {
+    padding-right: 0.5em !important;
+}
+
+.p-inputnumber-buttons-stacked .p-inputnumber-button-group .p-button.p-inputnumber-button .p-inputnumber-button-down {
+    border-bottom-right-radius: 0px !important;
+    border-bottom-left-radius: 3px !important;
+    border-bottom: 1px solid #a6a6a6 !important;
+    border-left: 1px solid #a6a6a6 !important;
+}
+
+.p-inputnumber-buttons-stacked .p-inputnumber-button-group .p-button.p-inputnumber-button .p-inputnumber-button-up {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 0px !important;
+    border-top: 1px solid #a6a6a6 !important;
+    border-left: 1px solid #a6a6a6 !important;
+}
+
+/*checkbox*/
+
+.p-checkbox {
+    margin-left: 10px !important;
+}
+
+/*txt*/
+
+.p-inputtext:enabled:focus {
+    -webkit-box-shadow: 0 0 0 0.2em #8dcdff !important;
+    -moz-box-shadow: 0 0 0 0.2em #8dcdff !important;
+    box-shadow: 0 0 0 0.2em #8dcdff !important;
+    border-color: #007ad9 !important;
+}
+
+.fa-sigma:after {
+    content: "Σ" !important;
+}
+
+/*invalid field value*/
+
+.p-inputtext.p-invalid {
+    border-color: #f44336;
+}
+
+.p-invalid .p-inputtext {
+    border-color: #f44336;
+}
+
+/*DataTable contextmenu styling*/
+
+.p-menu .p-menuitem-link .p-menuitem-icon,
+body .p-menubar .p-menuitem-link .p-menuitem-icon,
+body .p-tieredmenu .p-menuitem-link .p-menuitem-icon,
+body .p-contextmenu .p-menuitem-link .p-menuitem-icon,
+body .p-megamenu .p-menuitem-link .p-menuitem-icon,
+body .p-slidemenu .p-menuitem-link .p-menuitem-icon {
+    margin-left: 0.5em;
+}
+
+.p-menuitem-link {
+    font-size: 16px;
+    font-weight: bold !important;
+}
+
+/*date and time pickers*/
+
+.p-datepicker {
+    left: unset !important;
+}
+
+.p-timepicker {
+    direction: ltr;
+}
+
+.pi-chevron-left:before {
+    content: "\e901" !important;
+}
+
+.pi-chevron-right:before {
+    content: "\e900" !important;
+}
+
+.p-datepicker table td.p-datepicker-today > span {
+    background-color: #ebebef !important;
+    color: #252529 !important;
+    font-weight: normal;
+}
+
+/*the style for the universal required * */
+
+.requiredStar {
+    color: red;
+}
+
+/*routes overlay grid context*/
+
+.routesBtnGridContext {
+    border: none !important;
+    background: none !important;
+    width: 90%;
+    margin-right: 5% !important;
+    color: black !important;
+    text-align: right;
+}
+
+.routesBtnGridContext:hover {
+    background-color: #ededed !important;
+}
+
+/*scrollbar*/
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* scrollbar Track */
+
+::-webkit-scrollbar-track {
+    background: #e0e0e0;
+}
+
+/* scrollbar Handle */
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* scrollbar Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/*prime grid styles */
+
+.p-datatable,
+.p-datatable .p-datatable-thead > tr > th,
+.p-datatable .p-datatable-tbody > tr > td {
+    text-align: center !important;
+}
+
+.p-datatable-scrollable-header-box {
+    margin-right: 0px !important;
+}
+
+.p-column-filter {
+    /*this should be in prime5.0.0 when roma gets updated...*/
+    width: 100%;
+}
+
+/*.p-datatable .p-datatable-tbody > tr.p-highlight{
+	background-color: #e6f7ff !important;
+	color:black !important;
+}*/
+
+/* login page changes*/
+
+.login-body .login-panel .login-panel-content {
+    direction: ltr !important;
+}
+
+.login-body .login-panel .logo-container,
+.login-body .login-panel .username-container,
+.login-body .login-panel .password-container {
+    text-align: right !important;
+}
+
+/*grid pagination icons*/
+
+.p-datatable .p-paginator-bottom,
+.p-datatable .p-paginator-top {
+    direction: ltr;
+    align-items: initial;
+    justify-content: initial;
+}
+
+.pi-angle-left:before {
+    content: "\E932";
+}
+
+.pi-angle-right:before {
+    content: "\E931";
+}
+
+.pi-angle-double-right:before {
+    content: "\E92D";
+}
+
+.pi-angle-double-left:before {
+    content: "\E92E";
+}
+
+/*pages ui styles*/
+
+.divContainer {
+    flex: 1;
+    direction: ltr;
+}
+
+.divForm {
+    display: flex;
+    flex-wrap: wrap;
+    /*justify-content: space-between;
+	padding: 0.5%;
+	padding-right: 1%; 
+	border-radius: 5px;
+	border-top-right-radius: 0px;
+	border-top-left-radius: 0px;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 0px 5px 0 rgba(0, 0, 0, 0.19);*/
+}
+
+.divColumn,
+.divTwoColumn {
+    display: flex;
+    flex-direction: column;
+    flex: 6;
+}
+
+.divColumn .card {
+    padding-left: 15%;
+}
+
+.divSpacingColumn {
+    flex: 1;
+}
+
+.divTwoColumn {
+    flex: 12;
+}
+
+.divBottomSpacing {
+    margin-bottom: 15px;
+}
+
+.divRow {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.divNoPad {
+    padding-bottom: 0;
+}
+
+.divTopSpace {
+    margin-top: 25px;
+}
+
+.divHidden {
+    display: none;
+}
+
+.divFlexOne {
+    flex: 1;
+}
+
+/*dialog forms*/
+
+.divDialogForm {
+    margin: 0;
+    margin-bottom: 10px;
+    display: flex;
+    opacity: 1;
+    transition: opacity 0.5s linear;
+}
+
+/*prepareVisits buttons*/
+
+.prepareVisitSchedBtnTooltip,
+.prepareVisitSchedBtnTooltipRed {
+    background: none !important;
+    border: none !important;
+    color: inherit !important;
+}
+
+.prepareVisitSchedBtnTooltip:focus,
+.prepareVisitSchedBtnTooltipRed:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.prepareVisitSchedBtnTooltip .p-button-text:focus,
+.prepareVisitSchedBtnTooltipRed .p-button-text:focus {
+    outline: none !important;
+}
+
+.prepareVisitSchedBtnTooltipRed {
+    color: red !important;
+}
+
+/*local file upload*/
+
+.p-fileupload-choose label {
+    cursor: pointer;
+}
+
+/*divBreakerForDropdowns*/
+
+.divBreakerForDropdowns {
+    height: 120px;
+    width: 100%;
+}
+
+/*profile*/
+
+.profileImg {
+    font-size: 25px;
+    margin-top: 8px;
+}
+
+/*grid horizontal scroll*/
+
+.gridViewRoute,
+.viewUsersDivGrid,
+.dtDivScroll,
+.delegateCatsDivGrid {
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+.viewUsersGrid,
+.prepareVisitSchedDtGrid,
+.customerToDoListDialogDivGrid,
+.pickCustomersDialogGrid,
+.pickItemsDialogMultipleGrid,
+.customerCatsGrid,
+.dtViewCustomers,
+.delegateCatsGrid,
+.viewDelegatesGrid,
+.customerTasksGrid,
+.saleVansGrid,
+.skipReasonsGrid,
+.permissionsDt,
+.routesDtRoutes,
+.visitsScheduleDtGrid,
+.viewRoutesDtGrid {
+    min-width: fit-content;
+    word-wrap: break-word;
+}
+
+/*dark theme font*/
+
+.layout-wrapper.layout-menu-dark .layout-menu-container .layout-menu li a .layout-menuitem-text,
+.layout-wrapper.layout-menu-dark .layout-menu-container .layout-menu li button .layout-menuitem-text {
+    color: white;
+    font-weight: 800;
+}
+
+/*login page footer*/
+
+.login-panel {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+/*customerAttachments*/
+
+.customerAttachmentDetails {
+    text-align: center;
+}
+
+.linkButton {
+    border: none;
+    background: transparent;
+    color: rgb(53, 53, 255);
+    cursor: pointer;
+}
+
+.linkButton:hover {
+    color: rgb(19, 19, 133);
+}
+
+.linkButton:focus {
+    outline: none;
+}
+.p-multiselect-token {
+    margin-left: 10px;
+}
+.p-multiselect-token-label {
+    margin-left: 5px;
+}
+
+/*general styles media queries*/
+
+@media only screen and (max-width: 1100px) {
+    .divForm {
+        flex-direction: column;
+    }
+}
+
+@media only screen and (max-width: 850px) {
+    .divDialogForm {
+        flex-direction: column;
+    }
+}
+
+.loginCard {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 2px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    width: 590px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 110px;
+}
+
+.loginLogoImg {
+    max-width: 250px;
+    max-height: 200px;
+}
+
+.loginInputContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.loginTxtUsername{
+	width: 100%;
+}
+input.p-inputtext.p-component.p-password-input,
+input.p-inputtext.p-component.loginTxtUsername {
+    width: 100%;
+    outline: none;
+    border: 0.2px solid lightgray !important;
+    border-radius: 5px !important;
+    padding: 8px !important;
+    color: black !important;
+    font-weight: bold !important;
+    font-size: 14px !important;
+}
+
+.login-input {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.loginLblUsername {
+    font-weight: bold;
+    color: #255d6e;
+}
+
+button.p-button.p-component.loginBtnLogin {
+    background-color: #f28502 !important;
+    border-color: #f28502 !important;
+    border-radius: 20px !important;
+    width: 75% !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    font-family: "NotoKufiArabic" !important;
+}
+.loginLoginInfoContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-footer-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-footer-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.login-footer-isco {
+    font-size: 15px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.login-footer-isco-name {
+    align-self: center;
+}
+.loginFooterInfoContainer {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.loginFooterInfo {
+    color: black;
+    margin-left: 10px;
+    font-weight: 600;
+    font-size: 12px;
+    font-family: "Inter UI", sans-serif !important;
+}
+
+.login-footer-isco-logo {
+    width: 150px;
+}
+
+.login-footer-contact {
+    display: flex;
+    justify-content: space-between;
+}
+
+.p-fileupload-content {
+    display: none !important;
+}
+.p-fileupload-buttonbar {
+    border: none !important;
+}
+
+div.p-fileupload-buttonbar > button:nth-child(2) {
+    display: none !important;
+}
+.p-button-icon-left {
+    margin-left: 5px;
+}
+
+/*To prevenet the browser from scrolling to the hidden checkbox on check/uncheck*/
+.p-hidden-accessible {
+    visibility: hidden;
+}
+
+.swal2-container {
+    z-index: 10000 !important;
+}

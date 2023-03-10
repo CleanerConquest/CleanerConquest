@@ -28,6 +28,7 @@ import java.util.Optional;
 @CrossOrigin
 @SecurityRequirement(name = "Bearer Authentication")
 public class OrderController {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private OrderServImpl orderServ;
     @Autowired

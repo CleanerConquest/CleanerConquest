@@ -1,13 +1,13 @@
 package com.example.carpet;
 
 import com.example.carpet.payloads.request.LoginReq;
-import com.example.carpet.payloads.response.UserInfoRes;
 import com.google.gson.Gson;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.apache.tomcat.util.buf.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.client.HttpClientErrorException;
@@ -16,20 +16,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.CookieManager;
+import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-
 public class StepDefs extends CarpetApplicationTests {
     private final String baseUrl = "http://localhost:9090";
+    private final CookieManager cookieManager = new CookieManager();
     private final Logger logger = Logger.getLogger(String.valueOf(StepDefs.class));
     private String username;
     private String password;
@@ -37,8 +34,7 @@ public class StepDefs extends CarpetApplicationTests {
     private String lastResponse;
     private String lastRequest;
     private HttpURLConnection con;
-    private String jwt;
-    private String refreshToken;
+    private List<HttpCookie> cookies = null;
 
     @Given("{string}|{string}")
     public void putUsernamePassword(String username, String password) {
@@ -58,7 +54,7 @@ public class StepDefs extends CarpetApplicationTests {
     public void theClientReceivesStatusCodeOf(List<Integer> statusCodes) {
         boolean inList = false;
         for (Integer statusCode : statusCodes) {
-            inList = statusCode.equals(lastStatusCode.value()) || inList;
+            inList = statusCode.equals(lastStatusCode.value()) ? true : inList;
         }
         Assertions.assertTrue(inList);
     }
@@ -75,13 +71,15 @@ public class StepDefs extends CarpetApplicationTests {
             con.setRequestMethod(type);
             con.setRequestProperty("Content-Type", "application/json");
             con.setRequestProperty("Accept", "application/json");
-            if (jwt != null) {
-                con.setRequestProperty("Authorization", "Bearer " + jwt);
+            if (cookies != null) {
+                con.setRequestProperty("Cookie",
+                        StringUtils.join(cookieManager.getCookieStore().getCookies().stream().map(object -> Objects.toString(object, null))
+                                .toList(), ';'));
             }
             con.setDoOutput(true);
             if (jsonBody != null && !jsonBody.isBlank()) {
                 OutputStream outputStream = con.getOutputStream();
-                byte[] input = jsonBody.getBytes(StandardCharsets.UTF_8);
+                byte[] input = jsonBody.getBytes("utf-8");
                 outputStream.write(input, 0, input.length);
                 outputStream.close();
                 con.getOutputStream();
@@ -89,13 +87,24 @@ public class StepDefs extends CarpetApplicationTests {
             lastStatusCode = HttpStatusCode.valueOf(con.getResponseCode());
             System.out.println(lastStatusCode);
             if (!lastStatusCode.isError()) {
-                lastResponse = parseBody(con);
-                con.getInputStream().close();
-                logger.log(Level.INFO, lastResponse);
-                if (jwt == null || refreshToken == null) {
-                    parseTokens(lastResponse);
-                    con.disconnect();
+                BufferedReader bufferedReader = new BufferedReader(
+                        new InputStreamReader(con.getInputStream(), "utf-8"));
+                StringBuilder response = new StringBuilder();
+                String responseLine = null;
+                while ((responseLine = bufferedReader.readLine()) != null) {
+                    response.append(responseLine.trim());
                 }
+                bufferedReader.close();
+                con.getInputStream().close();
+                lastResponse = response.toString();
+                System.out.println(lastResponse);
+
+                String cookiesHeader = con.getHeaderField("Set-Cookie");
+                if (cookiesHeader != null) {
+                    cookies = HttpCookie.parse(cookiesHeader);
+                    cookies.forEach(cookie -> cookieManager.getCookieStore().add(null, cookie));
+                }
+                con.disconnect();
 
             }
 
@@ -124,9 +133,10 @@ public class StepDefs extends CarpetApplicationTests {
                 mapBody.get(0).keySet()) {
             if (types.get(key).equals("List")) {
                 castedObjectsMap.put(key, Arrays.stream(objectBeforeCasting.get(key).split(",")).map(Integer::valueOf).collect(Collectors.toList()));
-            } else if (types.get(key).equals("Integer")) {
-                castedObjectsMap.put(key, Integer.parseInt(objectBeforeCasting.get(key)));
-            } else if (types.get(key).equals("Double")) {
+            }else if (types.get(key).equals("Integer")){
+                castedObjectsMap.put(key,Integer.parseInt(objectBeforeCasting.get(key)));
+            }
+            else if (types.get(key).equals("Double")) {
                 castedObjectsMap.put(key, Double.valueOf(objectBeforeCasting.get(key)));
             } else {
                 castedObjectsMap.put(key, objectBeforeCasting.get(key));
@@ -134,38 +144,5 @@ public class StepDefs extends CarpetApplicationTests {
         }
         Gson json = new Gson();
         lastRequest = json.toJson(castedObjectsMap);
-    }
-
-    private void parseTokens(String json) {
-        Gson gson = new Gson();
-        UserInfoRes userInfoRes = gson.fromJson(json, UserInfoRes.class);
-        jwt = userInfoRes.getToken();
-        refreshToken = userInfoRes.getRefreshToken();
-    }
-
-    private String parseBody(HttpURLConnection con) {
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
-            StringBuilder stringBuilder = new StringBuilder();
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line + "\n");
-            }
-            bufferedReader.close();
-            return stringBuilder.toString();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-
-    @When("refreshToken")
-    public void refreshtoken() {
-        sendRequest("/api/auth/refreshtoken", "POST",
-                "{" +
-                        "\"refreshToken\":" + "\"" + refreshToken + "\"" +
-                        "}"
-        );
     }
 }

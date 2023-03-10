@@ -23,7 +23,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         jsr250Enabled = true,
         prePostEnabled = true)
 public class WebSecurityConfig {
-
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -35,6 +34,7 @@ public class WebSecurityConfig {
         return new AuthTokenFilter();
     }
 
+
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -44,6 +44,7 @@ public class WebSecurityConfig {
 
         return authProvider;
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
@@ -55,14 +56,15 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/test/**", "/v3/api-docs/**",
-                        "/swagger-ui/**", "/swagger-ui.html" ).permitAll()
+                .requestMatchers( "/v3/api-docs/**",
+                        "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .anyRequest().authenticated();
 
         http.headers().frameOptions().sameOrigin();

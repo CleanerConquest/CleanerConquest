@@ -5,12 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
-public class LoginReq {
-	@NotBlank
-  private String username;
-
-	@NotBlank
-	private String password;
+public class TokenRefreshReq {
+  @NotBlank
+  private String refreshToken;
 
 }

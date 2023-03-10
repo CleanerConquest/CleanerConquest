@@ -28,6 +28,7 @@ Update Worker Details
 | 200 | Updated successfully |
 | 204 | Wrong Worker Id |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -56,6 +57,7 @@ Update Customer Details
 | 200 | Updated successfully |
 | 204 | Wrong Customer Id |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -77,6 +79,7 @@ Add New Worker
 | ---- | ----------- |
 | 200 | Added successfully |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -109,6 +112,7 @@ Add New Product From Form
 | ---- | ----------- |
 | 200 | Added successfully |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -130,6 +134,7 @@ Add New Product AS Json (No Image Required)
 | ---- | ----------- |
 | 200 | Added successfully |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -151,6 +156,7 @@ Add New Order
 | ---- | ----------- |
 | 200 | Added successfully |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -172,6 +178,7 @@ Add New Customer
 | ---- | ----------- |
 | 200 | Added successfully |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -185,14 +192,20 @@ Add New Customer
 #### POST
 ##### Summary:
 
-Admin Sign Up Testing Purposes Only
+Sign Up
+
+##### Description:
+
+For role use admin for admin,mod for moderator and "" for user
 
 ##### Responses
 
 | Code | Description |
 | ---- | ----------- |
-| 200 | Signed Up successfully |
+| 200 | User registered successfully! |
+| 400 | Error: Username/Email is already taken! Error:Role is not found! |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ### /api/auth/signout
@@ -208,6 +221,7 @@ Sign Out
 | ---- | ----------- |
 | 200 | Signed Out successfully |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ### /api/auth/signin
@@ -215,7 +229,7 @@ Sign Out
 #### POST
 ##### Summary:
 
-Admin Sign In
+Sign In
 
 ##### Responses
 
@@ -223,6 +237,23 @@ Admin Sign In
 | ---- | ----------- |
 | 200 | Sign in successfully |
 | 401 | Unauthorized |
+| 403 | Forbidden |
+| 404 | not found |
+
+### /api/auth/refreshtoken
+
+#### POST
+##### Summary:
+
+Refresh JWT By the refresh token
+
+##### Responses
+
+| Code | Description |
+| ---- | ----------- |
+| 200 | Done |
+| 401 | Unauthorized |
+| 403 | Refresh token is not in database! |
 | 404 | not found |
 
 ### /worker/countByDate{date}
@@ -245,6 +276,7 @@ Get Number Of Workers Before Specific Date
 | 200 | Done successfully |
 | 204 | Zero Workers |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -273,6 +305,7 @@ Get All Workers By Name
 | 200 | Done successfully |
 | 204 | No Workers Found |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -295,6 +328,7 @@ Get All The Available Worker
 | 200 | Done successfully |
 | 204 | No Workers Found |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -323,6 +357,7 @@ Get Product Image
 | 200 | Done successfully |
 | 204 | Wrong Product ID |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -351,6 +386,7 @@ Get Product Details
 | 200 | Done successfully |
 | 204 | Wrong Product ID |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -373,6 +409,7 @@ Get All The Available Products
 | 200 | Done successfully |
 | 204 | No Products Found |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -401,6 +438,7 @@ Update Order Status
 | 200 | Updated successfully |
 | 204 | Wrong Order Id |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -429,6 +467,7 @@ Money Expected From Unfinished Orders Before Specific Date
 | 200 | Done successfully |
 | 204 | Zero Orders |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -457,6 +496,7 @@ Money Gained From Finished Orders Before Specific Date
 | 200 | Done successfully |
 | 204 | Zero Orders |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -485,6 +525,7 @@ Get Number Of Unfinished Orders Before Specific Date
 | 200 | Done successfully |
 | 204 | Zero Orders |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -513,6 +554,7 @@ Get Number Of Orders Before Specific Date
 | 200 | Done successfully |
 | 204 | Zero Orders |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -541,6 +583,7 @@ Get All Orders By Name
 | 200 | Done successfully |
 | 204 | No Orders Found |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -563,6 +606,7 @@ Get All The Available Orders
 | 200 | Done successfully |
 | 204 | No Orders Found |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -591,6 +635,7 @@ Get Number Of Customer Before Specific Date
 | 200 | Done successfully |
 | 204 | Zero Customers |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -619,6 +664,7 @@ Get All Customers By Name
 | 200 | Done successfully |
 | 204 | No Customers Found |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -641,6 +687,7 @@ Get All The Available Customers
 | 200 | Done successfully |
 | 204 | No Customers Found |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -669,6 +716,7 @@ Unemploy Worker Details
 | 200 | Unemployed successfully |
 | 204 | Wrong Worker Id |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -691,6 +739,7 @@ Delete Products By ID
 | 200 | Deleted successfully |
 | 204 | One of the Product Not Found |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security
@@ -713,6 +762,7 @@ Delete Customers By ID
 | 200 | Deleted successfully |
 | 204 | One of the customers Not Found |
 | 401 | Unauthorized |
+| 403 | Forbidden |
 | 404 | not found |
 
 ##### Security

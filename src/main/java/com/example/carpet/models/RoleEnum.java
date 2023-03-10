@@ -1,5 +1,7 @@
 package com.example.carpet.models;
 
 public enum RoleEnum {
-    ADMIN
+        USER,
+        MODERATOR,
+        ADMIN
 }

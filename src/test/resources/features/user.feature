@@ -24,3 +24,14 @@ Feature: user
       | amr      | test123  | akurdi202@gmail.com |
     When the client calls "/api/auth/signup"
     Then the client receives status code of [400]
+
+  Scenario: admin refresh the jwt
+    Given 'amr'|'test123'
+    When the client calls "/api/auth/signin"
+    Then the client receives status code of [200]
+    When refreshToken
+    Then the client receives status code of [200]
+
+  Scenario: refresh the jwt with empty or wrong refresh token
+    When refreshToken
+    Then the client receives status code of [403]

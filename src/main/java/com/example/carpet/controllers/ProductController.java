@@ -192,8 +192,8 @@ public class ProductController {
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
-    @DeleteMapping("/deleteById{id}")
-    public @ResponseBody ResponseEntity<?> deleteCustomerById(@Valid @RequestBody Map<String, Object> map) {
+    @DeleteMapping("/deleteById")
+    public @ResponseBody ResponseEntity<?> deleteProductById(@Valid @RequestBody Map<String, Object> map) {
         try {
             List<Integer> ids = (List<Integer>) map.get("ids");
             List<Long> longList = ids.stream().map(Long::valueOf) //or map to any other type/objects with "e -> new..."

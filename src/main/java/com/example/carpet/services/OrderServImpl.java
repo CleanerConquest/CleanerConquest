@@ -41,8 +41,9 @@ public class OrderServImpl implements OrderServ {
 
     @Override
     public Integer getDiscount(long id) {
-        if (orderRepository.getDiscount(id, Timestamp.valueOf(LocalDateTime.now().minusMonths(3))) >= 100) {
-            return 10;
+        Float amount= orderRepository.getDiscount(id, Timestamp.valueOf(LocalDateTime.now().minusMonths(3)));
+        if ( amount==null || amount< 100) {
+            return 0;
         }
         return 0;
     }

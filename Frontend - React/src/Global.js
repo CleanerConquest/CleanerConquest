@@ -4,11 +4,11 @@ window.$.history = null
 window.$.uName = ""
 window.$.uCode = 0
 window.$.permissions = []
-window.$.url = "http://localhost:9090/api/"
+window.$.url = "http://localhost:9090/"
 window.$.config = () => {
     var config = {
         headers: {
-            cookie: localStorage.getItem("token"),
+            'Authorization': "Bearer " + localStorage.getItem("token"),
             'Content-Type': 'application/json;charset=utf-8',
         }
     }

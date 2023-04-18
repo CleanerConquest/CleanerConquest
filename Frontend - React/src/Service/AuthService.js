@@ -4,78 +4,65 @@ const $ = window.$
 
 
 export class AuthService {
-    loadProfile(id, self) {
 
-        return axios.get($.url + 'api/users/' + id + "/false", $.config())
+    signup(body) {
+        axios.post($.url + 'api/auth/signup', body, $.config())
             .then(response => {
-                if (response.data && response.data.length === 1) {
-                    var data = response.data[0]
-                    if (localStorage.getItem("login")) {
-                        $.SuccessToast({ detail: "تمت عملية تسجيل الدخول بنجاح" })
-                        localStorage.removeItem("login")
-                    }
-                    $.permissions = data.permissions ? data.permissions.map(perm => { return perm.permissionCode }) || [] : []
-                    $.uName = data.name
-                    $.uCode = data.code
-                    self.setState({ name: data.name, role: data.roleName, permissions: $.permissions }, () => self.createMenu())
-                }
-                else {
-                    $.ErrorToast({ detail: "هذا المستخدم غير موجود، يرجى اعادة تسجيل الدخول" })
-                    localStorage.clear()
-                    if (self.props.location.pathname !== "/login")
-                        self.props.history.push("/login")
-                }
+                if (response.status === 200) { { return response } }
+                else { $.ErrorToast({ detail: "SignUp Failed" }) }
             })
             .catch(error => {
-                $.ErrorToast({ detail: "فشلت عملية احضار بيانات المستخدم، حصل خلل ما\n" + error })
-                localStorage.clear()
-                if (self.props.location.pathname !== "/login")
-                    self.props.history.push("/login")
+                $.ErrorToast({ detail: "  SignUp Failed , Error :\n" + error })
                 console.log(error)
             })
     }
 
     logout(self) {
-        var er = null
-        return axios.post($.url + 'api/auth/logout', { UserId: localStorage.getItem("userId") }, $.config())
-            .then(response => {
-                if (response.data.message === "Failed")
-                    er = "logout failed"
-                else {
-                    localStorage.clear()
-                    self.props.history.push("/login")
-                }
-            })
-            .catch(error => {
-                er = error
-            })
-            .then(() => {
-                if (er) {
-                    $.ErrorToast({ detail: "فشلت عملية تسجيل الخروج\n" + er })
-                }
-            })
+        axios.post($.url + 'api/auth/signout', "", $.config())
+        localStorage.clear();
+        $.toast.clear()
+        self.props.history.push("/login")
     }
 
     login(body, self) {
-        console.log(body)
-        return axios.post($.url + 'auth/signin', body, $.config())
+        return axios.post($.url + 'api/auth/signin', body, $.config())
             .then(response => {
                 if (response.status === 200) {
-                    console.log(response)
-                    //localStorage.setItem("token", response.headers.get('set-cookie'))
+                    localStorage.setItem("token", response.data.token)
+                    localStorage.setItem("refershToken", response.data.refreshToken)
                     localStorage.setItem("username", response.data.username)
                     localStorage.setItem("userId", response.data.id)
+                    localStorage.setItem("role", response.data.roles[0])
                     $.toast.clear()
                     self.props.history.push("/")
                 }
-                else{
-                    $.ErrorToast({ detail: " Login Failed "})
+                else {
+                    $.ErrorToast({ detail: " Login Failed " })
                 }
-              
+
             })
             .catch(error => {
                 $.ErrorToast({ detail: "  Login Failed , Error :\n" + error })
                 console.log(error)
+            })
+    }
+
+    //Zaid Come Here
+    //Create Refresh Token
+    checkToRefersh(self) {
+        return axios.get($.url + 'customer/', $.config())
+            .then(response => {
+                return response
+            })
+            .catch(error => {
+                return axios.post($.url + 'api/auth/refreshtoken', localStorage.getItem('refershToken'), $.config())
+                    .then(response => {
+                        localStorage.setItem("token", response.data.refreshToken)
+                    })
+                    .catch(error => {
+                        $.ErrorToast({ detail: "  Session Timed Out  , Please Login Again :" })
+                        self.props.history.push("/login")
+                    })
             })
     }
 }

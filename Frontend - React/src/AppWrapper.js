@@ -37,9 +37,7 @@ class AppWrapper extends Component {
 		}
 	}*/
 	getRoutes = () => {
-		//return <App />
-		console.log("this.props.location.pathname")
-		console.log(this.props.location.pathname)
+
 		switch (this.props.location.pathname) {
 			case "/login":
 				return <Route path="/login" component={Login} />

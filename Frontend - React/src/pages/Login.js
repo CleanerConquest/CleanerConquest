@@ -5,6 +5,10 @@ import { Button } from "primereact/button";
 import { sha1 } from 'object-hash'
 import { AuthService } from '../Service/AuthService'
 import Swal from 'sweetalert2'
+import { IoIosGlobe } from 'react-icons/io';
+import { FiPhoneCall } from 'react-icons/fi';
+import { FaFax } from 'react-icons/fa';
+
 const $ = window.$
 
 
@@ -13,7 +17,6 @@ export default class Login extends Component {
 
 	constructor() {
 		super();
-		document.title = "Login "
 		this.state = {
 			checked: false,
 			txtUsername: "",
@@ -23,7 +26,20 @@ export default class Login extends Component {
 		this.authService = new AuthService()
 	}
 	
+	_handleKeyDown(event) {
+
+		if(event.keyCode === 13){
+				this.login();
+		}
+			
+	}
+
+
 	componentDidMount() {
+
+		this.adminPasswordHandle = this._handleKeyDown.bind(this);
+		document.addEventListener('keydown', this.adminPasswordHandle)
+
 	}
 
 	login = () => {
@@ -42,36 +58,39 @@ export default class Login extends Component {
 	}
 
 	render() {
+
 		return (
 			<div className="login-body">
-				<div className="card login-panel ui-fluid">
-					<div className="login-panel-content">
-						<div className="p-grid">
-							<div className="p-col-12 p-sm-6 p-md-6 logo-container" >
-								<img src="../../Cleaner Conquest Logo.png" alt="Cleaner Conquest Logo" style={{width:'250px',height:'250px'}}/>
-								<span className="guest-sign-in">Your Conquest is waiting, Login to start</span>
-							</div>
-							<div className="p-col-12 username-container">
-								<label> User Name</label>
-								<div className="login-input">
-									<InputText autoFocus className="loginTxtUsername" value={this.state.txtUsername} onChange={(e) => { this.setState({ txtUsername: e.target.value }) }} />
-								</div>
-							</div>
-							<div className="p-col-12 password-container">
-								<label>Password </label>
-								<div className="login-input">
-									<Password className="loginTxtUsername" value={this.state.txtPassword} onChange={(e) => this.setState({ txtPassword: e.target.value })} />
-								</div>
-							</div>
-
-							<div className="p-col-12 p-sm-6 p-md-6">
-								<Button className="loginBtnLogin" label="Login" icon="pi pi-user" iconPos="left" onClick={() => { this.login() }} />
+				<div className="card loginCard">
+					<img src="assets/layout/images/Cleaner Conquest Logo.png" alt="Cleaner Conquest" className="loginLogoImg" />
+					<div className="loginLoginInfoContainer">
+						<div className="loginInputContainer">
+							<label className="loginLblUsername"> Username</label>
+							<div className="login-input">
+								<InputText autoFocus className="loginTxtUsername" value={this.state.txtUsername} onChange={(e) => { this.setState({ txtUsername: e.target.value }) }} />
 							</div>
 						</div>
+
+						<div className="loginInputContainer">
+							<label className="loginLblUsername"> Password</label>
+							<div className="login-input">
+								<Password className="loginTxtUsername" value={this.state.txtPassword} onChange={(e) => this.setState({ txtPassword: e.target.value })} />
+							</div>
+						</div>
+
+						<Button className="loginBtnLogin" label="Login " onClick={this.login} />
+					</div>
+
+					<div className="login-footer-content">
+						<label className="login-footer-isco-name"> Cleaner Conquest 2023, All Rights Reserved.</label>
+				
+
 					</div>
 				</div>
 			</div>
 		)
+		}
+
 	}
-}
+
 

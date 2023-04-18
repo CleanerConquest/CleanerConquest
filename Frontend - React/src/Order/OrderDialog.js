@@ -4,173 +4,174 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import * as React from 'react';
 import { classNames } from 'primereact/utils';
-import { Toast } from 'primereact/toast';
+import Loading from 'react-loading';
+import Swal from 'sweetalert2';
+import { PickList } from 'primereact/picklist';
+import { ProductService } from '../Service/ProductSevice';
+import { CustomerService } from '../Service/CustomerService';
+import { InputNumber } from 'primereact/inputnumber';
+import { Calendar } from 'primereact/calendar';
+import { Dropdown } from 'primereact/dropdown';
+import moment from 'moment/moment';
 
+
+const $ = window.$
 
 export default class OrderDialog extends React.Component {
     constructor(props) {
-        document.title = "Order Dialog"
         super(props);
         this.state = {
-            order:null,
-            name: '',
-            orderStatus: '',
-            createdAT: '',
-            estimated: '',
-            finishedAt: '',
+            loading: false,
+            order: null,
             products: [],
-            productsQuantities: [],
-            worker: '',
-            customer: '',
-            price: '',
-            discount: '',
-            submitted: false,
+            target: [],
+            name: '',
+            estimated: '',
+            customers: [],
+            selectedCustomer: {},
+
         };
+        this.productService = new ProductService()
+        this.customerService = new CustomerService()
     }
 
-  
+    componentDidMount = () => {
+        this.setInital()
 
-    componentDidUpdate = async (prevProps) => {
-        if(this.props.order.id
-             !== prevProps.order.id){
-        this.setState({
-            name: this.props.order.name,
-            orderStatus:this.props.order.orderStatus,
-            createdAT:this.props.order.createdAT,
-            estimated: this.props.order.estimated,
-            finishedAt: this.props.order.finishedAt,
-            products: this.props.order.products,
-            productsQuantities: this.props.order.productsQuantities,
-            worker: this.props.order.worker,
-            customer: this.props.order.customer,
-            price: this.props.order.price,
-            discount:this.props.order.discount,
-                   })}
+    }
+    setInital = async () => {
+        this.loadProducts()
+        this.loadCustomers()
     }
     render() {
-
-
+        let minDate = new Date()
         return (
-
             <div>
-                <Toast ref={(el) => this.toast = el} />
-                <Dialog visible={this.props.visible} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Order Details" modal className="p-fluid" footer={this.orderDialogFooter} onHide={this.props.onHide}>
+                {
+                    this.state.loading
+                        ? <Loading /> :
+                        <Dialog visible={this.props.visible} style={{ width: '70rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Order Details" modal className="p-fluid" footer={this.orderDialogFooter} onHide={this.props.onHide}>
+                            <div className='field'>
+                                <label htmlFor="name" className="font-bold">Order Name</label>
+                                <InputText id="name" value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} required />
+                            </div>
+                            <div className='field'>
+                                <label htmlFor="estimated" className="font-bold">Estimated Time</label>
+                                <Calendar value={this.state.estimated} onChange={(e) => this.setState({ estimated: e.value })} required minDate={minDate} showIcon />
+                            </div>
+                            <div className='field'>
+                                <label htmlFor="customer" className="font-bold">Customer </label>
+                                <Dropdown value={this.state.selectedCustomer} onChange={(e) => this.setState({ selectedCustomer: e.value })} options={this.state.customers} optionLabel="name" placeholder="Select a Customer"
+                                    filter />
+                            </div>
+                            <PickList source={this.state.products} target={this.state.target} onChange={e => { this.setState({ products: e.source, target: e.target }) }} itemTemplate={this.itemTemplate} filter filterBy="name" breakpoint="1000px"
+                                sourceHeader="Available Products" targetHeader="Selected Products" sourceStyle={{ height: '30rem' }} targetStyle={{ height: '30rem' }}
+                                sourceFilterPlaceholder="Search by name" targetFilterPlaceholder="Search by name" />
 
-                    <div className="field">
-                        <label htmlFor="name" className="font-bold">
-                            Order Name
-                        </label>
-                        <InputText id="name" value={this.state.name} onChange={(e) => this.setState({ name: e.value })} required autoFocus className={classNames({ 'p-invalid': this.state.submitted && !this.state.name })} />
-                        {this.state.submitted && !this.state.name && <small className="p-error"> Name is required.</small>}
-                    </div>
-                    <div className="field">
-                        <label htmlFor="orderStatus" className="font-bold">
-                        Order Status
-                        </label>
-                        <InputText id="orderStatus" value={this.state.orderStatus} onChange={(e) => this.setState({ orderStatus: e.value })} required />
-                    </div>
-                    <div className="field">
-                        <label htmlFor="createdAT" className="font-bold">
-                             Created At
-                        </label>
-                        <InputText id="createdAT" value={this.state.createdAT} onChange={(e) => this.setState({ createdAT: e.value })} required />
-                    </div>
-                    <div className="field">
-                        <label htmlFor="estimated" className="font-bold">
-                        Estimated Time
-                        </label>
-                        <InputText id="estimated" value={this.state.estimated} onChange={(e) => this.setState({ estimated: e.value })} required />
-                    </div>
-                    <div className="field">
-                        <label htmlFor="finishedAt" className="font-bold">
-                        Finished At
-                        </label>
-                        <InputText id="finishedAt" value={this.state.finishedAt} onChange={(e) => this.setState({ finishedAt: e.value })} required />
-                    </div>
-                    <div className="field">
-                        <label htmlFor="products" className="font-bold">
-                        Products
-                        </label>
-                        <InputText id="products" value={this.state.products} onChange={(e) => this.setState({ products: e.value })} required />
-                    </div>
-                    <div className="field">
-                        <label htmlFor="productsQuantities" className="font-bold">
-                        Products Quantities
-                        </label>
-                        <InputText id="productsQuantities" value={this.state.productsQuantities} onChange={(e) => this.setState({ productsQuantities: e.value })} required />
-                    </div>
-                    <div className="field">
-                        <label htmlFor="worker" className="font-bold">
-                       Worker
-                        </label>
-                        <InputText id="worker" value={this.state.worker} onChange={(e) => this.setState({ worker: e.value })} required />
-                    </div>
-                    <div className="field">
-                        <label htmlFor="customer" className="font-bold">
-                        Customer
-                        </label>
-                        <InputText id="customer" value={this.state.customer} onChange={(e) => this.setState({ customer: e.value })} required />
-                    </div>
-                    <div className="field">
-                        <label htmlFor="price" className="font-bold">
-                        Price
-                        </label>
-                        <InputText id="price" value={this.state.price} onChange={(e) => this.setState({ price: e.value })} required />
-                    </div>
-                    <div className="field">
-                        <label htmlFor="discount" className="font-bold">
-                        Discount
-                        </label>
-                        <InputText id="discount" value={this.state.discount} onChange={(e) => this.setState({ discount: e.value })} required />
-                    </div>
-                </Dialog>
+                        </Dialog>
+                }
             </div>
-        );/*
-        return (
-           
-        );*/
+        );
     }
 
 
-   orderDialogFooter = () => {
+
+    itemTemplate = (item) => {
+        return (
+            <div className="flex flex-wrap p-2 align-items-center gap-3">
+                <img className="w-4rem shadow-2 flex-shrink-0 border-round" src={'data:image/png;base64,' + item.image} alt={item.name} />
+                <div className="flex-1 flex flex-column gap-2">
+                    <span className="font-bold">{item.name}</span>
+                    <div className="flex align-items-center gap-2">
+                        <i className="pi pi-tag text-sm"></i>
+                        <span>{item.category}</span>
+                    </div>
+                </div>
+                <span className="font-bold text-900">{item.price}{item.priceUnit}</span>
+                <InputNumber value={item.quantity} onValueChange={(e) => { item.quantity = e.value }} min={0} />
+
+            </div>
+        )
+    }
+    loadProducts = () => {
+        this.setState({ loading: true })
+        let response = this.productService.getAllProducts()
+        response.then(r => { this.setState({ products: r.data.map(v => Object.assign(v, { quantity: 0 })) }) })
+        this.setState({ loading: false })
+
+    }
+    loadCustomers = () => {
+        this.setState({ loading: true })
+
+        let response = this.customerService.getAllCustomers()
+        let customer = []
+        response.then(r =>
+            this.setState({ customers: r.data.map(v => Object.assign(v, { name: v.firstName + ' ' + v.lastName })) }))
+        this.setState({ loading: false })
+
+
+    }
+
+    saveOrder = () => {
+        console.log(this.state.selectedCustomer)
+        if (this.state.estimated === '' || this.state.name === '' || this.state.selectedCustomer === {}) {
+            $.ErrorToast({ detail: "Please Fill Order Details" })
+            return
+        }
+        else if (this.state.target.length === 0) {
+            $.ErrorToast({ detail: "Please Select At Least One Product" })
+            return
+        }
+        else {
+            for (let i = 0; i < this.state.target.length; i++) {
+                if (this.state.target[i].quantity === 0) {
+                    $.ErrorToast({ detail: "Please Fill All Quantites" })
+                    return
+                }
+            }
+        }
+
+        let productsIDs = []
+        let productsQuantities = []
+        for (let i = 0; i < this.state.target.length; i++) {
+            productsIDs.push(this.state.target[i].id)
+            productsQuantities.push(this.state.target[i].quantity)
+        }
+
+        let newOrder = {
+            name: this.state.name,
+            estimated: moment(this.state.estimated).format().split('T')[0],
+            productsIDs: productsIDs,
+            productsQuantities: productsQuantities,
+            customerID: this.state.selectedCustomer.id
+        }
+
+        let response = this.props.service.addNewOrder(newOrder)
+        response.then(r => {
+            if (r.status === 200) {
+                $.SuccessToast({ detail: "Order Added Succssfully" })
+                this.props.refresh();
+                this.props.onHide();
+            }
+            else {
+                $.ErrorToast({ detail: "Adding Order Failed" })
+                this.props.refresh();
+
+            }
+        })
+        console.log(newOrder)
+
+    }
+
+    orderDialogFooter = () => {
         return (
             <React.Fragment>
-                <Button label="Cancel" icon="pi pi-times" outlined onClick={this.saveOrder} />
+                <Button label="Cancel" icon="pi pi-times" outlined onClick={() => this.props.onHide()} />
                 <Button label="Save" icon="pi pi-check" onClick={this.saveOrder} />
             </React.Fragment>
         );
 
     }
-
-
-    saveOrder = () => {
-        this.toast.show({ severity: 'warn', summary: 'تم الحذف', detail: 'تمت عملية الحذف', life: 3000 });
-
-        /*
-
-        setSubmitted(true);
-
-        if (product.name.trim()) {
-            let _products = [...products];
-            let _product = { ...product };
-
-            if (product.id) {
-                const index = findIndexById(product.id);
-
-                _products[index] = _product;
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-            } else {
-                _product.id = createId();
-                _product.image = 'product-placeholder.svg';
-                _products.push(_product);
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-            }
-
-            setProducts(_products);
-            setProductDialog(false);
-            setProduct(emptyProduct);*/
-    }
-    toast = null;
 };
 
 

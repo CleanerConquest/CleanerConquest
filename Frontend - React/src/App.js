@@ -19,6 +19,7 @@ import Order from './Order/Order';
 import Product from './Product/Product';
 import Worker from './Worker/Worker';
 import Home from './Home/Home';
+import SignUp from './pages/SignUp';
 const $ = window.$;
 
 class CleanerConquest extends React.Component {
@@ -81,17 +82,18 @@ class CleanerConquest extends React.Component {
   componentDidMount() {
     var token = localStorage.getItem('token')
     this.createMenu();
-    console.log(token)
-    if (token ) {
-      //this.setState({ loading: true })
-      //  this.authService.loadProfile(userId, this).then(res => this.setState({ loading: false }))
-    }
-    else {
+
+
+    if (!token) {
       if (this.props.location.pathname !== "/login") {
         $.ErrorToast({ detail: "Loading Failed, Session Timed out , please login again" })
         this.props.history.push("/login")
       }
     }
+    else {
+
+    }
+
   }
 
 
@@ -336,7 +338,7 @@ class CleanerConquest extends React.Component {
   changeTopbarColor(event) {
     this.setState({ topbarColor: event.topbarColor });
     const topbarLogoLink = document.getElementById('topbar-logo');
-    topbarLogoLink.src = 'assets/layout/images/' + event.logo ;
+    topbarLogoLink.src = 'assets/layout/images/' + event.logo;
   }
 
   changeTheme(event) {
@@ -391,28 +393,38 @@ class CleanerConquest extends React.Component {
 
     items.push({
       label: " Customer",
-      icon: "fa fa-cog",
+      icon: "fa-solid fa-person-military-pointing",
       to: "/customer",
     })
     items.push({
       label: " Product",
-      icon: "fa fa-cog",
+      icon: "pi pi-box",
       to: "/product",
     })
     items.push({
       label: " Worker",
-      icon: "fa fa-cog",
+      icon: "pi pi-user",
       to: "/worker",
     })
     items.push({
       label: " Order",
-      icon: "fa fa-cog",
+      icon: "pi pi-shopping-cart",
       to: "/order",
     })
+    
+    localStorage.getItem("role") === 'ADMIN' ?
+
+      items.push({
+        label: "Sign Up",
+        icon: "fa-solid fa-user-plus",
+        to: "/signup",
+      })
+      : <div></div>
+
 
     items.push({
       label: "Sign Out",
-      icon: "fa fa-sign-out-alt",
+      icon: "pi pi-sign-out",
       command: () => this.logout()
     })
     this.setState({ menu: items })
@@ -420,7 +432,7 @@ class CleanerConquest extends React.Component {
 
 
   logout = () => {
-    this.authService.logout(this).then()
+    this.authService.logout(this)
   }
 
   ///////////////////////////////////////////////////////////////////////////////////////
@@ -469,6 +481,7 @@ class CleanerConquest extends React.Component {
                 <Route path="/product" component={Product} />
                 <Route path="/worker" component={Worker} />
                 <Route path="/order" component={Order} />
+                <Route path="/signup" component={SignUp} />
 
               </div>
 

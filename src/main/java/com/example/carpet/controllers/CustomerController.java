@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 @CrossOrigin
 @SecurityRequirement(name = "Bearer Authentication")
 public class CustomerController {
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private CustomerServImpl customerServ;
 
@@ -42,7 +41,7 @@ public class CustomerController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @PostMapping("/save")
-    public @ResponseBody ResponseEntity<?> creatCustomer(@Valid @RequestBody CustomerReq customerReq) {
+    public @ResponseBody ResponseEntity<Object> creatCustomer(@Valid @RequestBody CustomerReq customerReq) {
         customerServ.saveCustomer(Customer.builder()
                 .firstName(customerReq.getFirstName())
                 .lastName(customerReq.getLastName())
@@ -66,7 +65,7 @@ public class CustomerController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @GetMapping("/")
-    public @ResponseBody ResponseEntity<?> getAllCustomers() {
+    public @ResponseBody ResponseEntity<Object> getAllCustomers() {
         List<Customer> customers = customerServ.getAllCustomers();
         if (customers != null && !customers.isEmpty())
             return ResponseEntity.ok(customers);
@@ -83,7 +82,7 @@ public class CustomerController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @GetMapping("/byName{name}")
-    public @ResponseBody ResponseEntity<?> getCustomerByName(@RequestParam String name) {
+    public @ResponseBody ResponseEntity<Object> getCustomerByName(@RequestParam String name) {
         List<Customer> customers = customerServ.getCustomerByName(name);
         if (customers != null && !customers.isEmpty())
             return ResponseEntity.ok(customers);
@@ -99,7 +98,7 @@ public class CustomerController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @DeleteMapping("/deleteById")
-    public @ResponseBody ResponseEntity<?> deleteCustomerById(@Valid @RequestBody Map<String, Object> map) {
+    public @ResponseBody ResponseEntity<Object> deleteCustomerById(@Valid @RequestBody Map<String, Object> map) {
         try {
             List<Integer> ids = (List<Integer>) map.get("ids");
             List<Long> longList = ids.stream()
@@ -121,7 +120,7 @@ public class CustomerController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @GetMapping("/countByDate{date}")
-    public @ResponseBody ResponseEntity<?> getCustomerCountByDate(@RequestParam String date) {
+    public @ResponseBody ResponseEntity<Object> getCustomerCountByDate(@RequestParam String date) {
         Timestamp timestamp = Timestamp.valueOf(date + " 00:00:00.000000");
         Long customerCount = customerServ.getCustomerCountByDate(timestamp);
         if (customerCount != null && customerCount != 0)
@@ -138,7 +137,7 @@ public class CustomerController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @PutMapping("/update/{id}")
-    public @ResponseBody ResponseEntity<?> updateCustomer(@PathVariable("id") Long id, @RequestBody CustomerReq customerReq) {
+    public @ResponseBody ResponseEntity<Object> updateCustomer(@PathVariable("id") Long id, @RequestBody CustomerReq customerReq) {
         if (customerServ.updateCustomer(id, customerReq))
             return ResponseEntity.ok("Customer Updated");
         return ResponseEntity.status(204).build();

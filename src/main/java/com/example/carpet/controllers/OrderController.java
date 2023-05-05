@@ -11,8 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +45,7 @@ public class OrderController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @PostMapping("/save")
-    public @ResponseBody ResponseEntity<?> creatOrder(@Valid @RequestBody OrderReq orderReq) {
+    public @ResponseBody ResponseEntity<Object> creatOrder(@Valid @RequestBody OrderReq orderReq) {
         if (orderReq.getProductsIDs().size() != orderReq.getProductsQuantities().size())
             return ResponseEntity.badRequest().body("one of products doesn't have any quantity");
         Worker worker = workerServ.getWorkerWithLeastNumberOfOrders();
@@ -84,7 +82,7 @@ public class OrderController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @GetMapping("/")
-    public @ResponseBody ResponseEntity<?> getAllOrders() {
+    public @ResponseBody ResponseEntity<Object> getAllOrders() {
         List<Order> orders = orderServ.getAllOrders();
         if (orders != null && !orders.isEmpty())
             return ResponseEntity.ok(orders);
@@ -101,7 +99,7 @@ public class OrderController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @GetMapping("/byName{name}")
-    public @ResponseBody ResponseEntity<?> getOrderByName(@RequestParam String name) {
+    public @ResponseBody ResponseEntity<Object> getOrderByName(@RequestParam String name) {
         List<Order> orders = orderServ.getOrderByName(name);
         if (orders != null && !orders.isEmpty())
             return ResponseEntity.ok(orders);
@@ -118,7 +116,7 @@ public class OrderController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @GetMapping("/updateStatus{id}")
-    public @ResponseBody ResponseEntity<?> updateOrderStatus(@RequestParam long id) {
+    public @ResponseBody ResponseEntity<Object> updateOrderStatus(@RequestParam long id) {
         Optional<Order> orderOptional = orderServ.getOrderById(id);
         if (orderOptional.isPresent()) {
             Order order = orderOptional.get();
@@ -143,7 +141,7 @@ public class OrderController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @GetMapping("/countByDate{date}")
-    public @ResponseBody ResponseEntity<?> getOrdersCount(@RequestParam String date) {
+    public @ResponseBody ResponseEntity<Object> getOrdersCount(@RequestParam String date) {
         Timestamp timestamp = Timestamp.valueOf(date + " 00:00:00.000000");
         Long ordersCount = orderServ.getOrdersCount(timestamp);
         if (ordersCount != null && ordersCount != 0)
@@ -160,7 +158,7 @@ public class OrderController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @GetMapping("/countUnfinished{date}")
-    public @ResponseBody ResponseEntity<?> getUnfinishedOrdersCount(@RequestParam String date) {
+    public @ResponseBody ResponseEntity<Object> getUnfinishedOrdersCount(@RequestParam String date) {
         Timestamp timestamp = Timestamp.valueOf(date + " 00:00:00.000000");
         Long ordersCount = orderServ.getUnfinishedOrdersCount(timestamp, OrderStatus.COMPLETE);
         if (ordersCount != null && ordersCount != 0)
@@ -176,7 +174,7 @@ public class OrderController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @GetMapping("/sumFinishedByDate{date}")
-    public @ResponseBody ResponseEntity<?> getFinishedOrdersSum(@RequestParam String date) {
+    public @ResponseBody ResponseEntity<Object> getFinishedOrdersSum(@RequestParam String date) {
         Timestamp timestamp = Timestamp.valueOf(date + " 00:00:00.000000");
         Float sum = orderServ.getSumDoneOrdersPrice(timestamp);
         if (sum != null && sum != 0)
@@ -193,7 +191,7 @@ public class OrderController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @GetMapping("/sumUnfinishedByDate{date}")
-    public @ResponseBody ResponseEntity<?> getUnfinishedOrdersSum(@RequestParam String date) {
+    public @ResponseBody ResponseEntity<Object> getUnfinishedOrdersSum(@RequestParam String date) {
         Timestamp timestamp = Timestamp.valueOf(date + " 00:00:00.000000");
         Float sum = orderServ.sumUnfinishedOrdersPrice(timestamp);
         if (sum != null && sum != 0)

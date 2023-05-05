@@ -17,7 +17,6 @@ import com.example.carpet.services.RefreshTokenService;
 import com.example.carpet.services.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -69,7 +68,7 @@ public class AuthController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginReq loginRequest) {
+    public ResponseEntity<Object> authenticateUser(@Valid @RequestBody LoginReq loginRequest) {
 
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -99,7 +98,7 @@ public class AuthController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupReq signUpRequest) {
+    public ResponseEntity<Object> registerUser(@Valid @RequestBody SignupReq signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity.badRequest().body("Error: Username is already taken!");
         }
@@ -157,7 +156,7 @@ public class AuthController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @PostMapping("/refreshtoken")
-    public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshReq request) {
+    public ResponseEntity<TokenRefreshRes> refreshtoken(@Valid @RequestBody TokenRefreshReq request) {
         String requestRefreshToken = request.getRefreshToken();
 
         return refreshTokenService.findByToken(requestRefreshToken)
@@ -179,7 +178,7 @@ public class AuthController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @PostMapping("/signout")
-    public ResponseEntity<?> logoutUser() {
+    public ResponseEntity<Object> logoutUser() {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userId = userDetails.getId();
         refreshTokenService.deleteByUserId(userId);

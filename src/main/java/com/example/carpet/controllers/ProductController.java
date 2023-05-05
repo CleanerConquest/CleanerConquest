@@ -1,6 +1,5 @@
 package com.example.carpet.controllers;
 
-import com.example.carpet.models.Customer;
 import com.example.carpet.models.Product;
 import com.example.carpet.payloads.request.ProductReq;
 import com.example.carpet.services.ProductServImpl;
@@ -52,7 +51,7 @@ public class ProductController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @PostMapping("/saveJson")
-    public @ResponseBody ResponseEntity<?> addProductFromJson(@RequestBody ProductReq productReq) {
+    public @ResponseBody ResponseEntity<Object> addProductFromJson(@RequestBody ProductReq productReq) {
         return addProduct(productReq.name, productReq.category, productReq.description, productReq.productUnit, productReq.priceUnit, productReq.price, null, null);
     }
 
@@ -64,7 +63,7 @@ public class ProductController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @PostMapping(path = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public @ResponseBody ResponseEntity<?> addProduct(@RequestParam String name, @RequestParam String category, @RequestParam String description, @RequestParam String productUnit, @RequestParam String priceUnit, @RequestParam Double price, @RequestPart(required = false) MultipartFile file, HttpServletRequest request) {
+    public @ResponseBody ResponseEntity<Object> addProduct(@RequestParam String name, @RequestParam String category, @RequestParam String description, @RequestParam String productUnit, @RequestParam String priceUnit, @RequestParam Double price, @RequestPart(required = false) MultipartFile file, HttpServletRequest request) {
         try {
             byte[] imageData = new byte[0];
             if (file != null && !file.isEmpty()) {
@@ -76,7 +75,6 @@ public class ProductController {
                 if (fileName == null || fileName.contains("..")) {
                     return ResponseEntity.badRequest().body("Sorry! Filename contains invalid path sequence " + fileName);
                 }
-                Date createDate = new Date();
                 log.info("Name: " + name + " " + filePath);
                 log.info("description: " + description);
                 log.info("category: " + category);
@@ -84,10 +82,10 @@ public class ProductController {
                     File dir = new File(uploadDirectory);
                     if (!dir.exists()) {
                         log.info("Folder Created");
-                        dir.mkdirs();
+                        if (!dir.mkdirs()) return ResponseEntity.badRequest().build();
                     }
                     // Save the file locally
-                    BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
+                    BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(filePath));
                     stream.write(file.getBytes());
                     stream.close();
                 } catch (Exception e) {
@@ -149,7 +147,7 @@ public class ProductController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @GetMapping("/details{id}")
-    public @ResponseBody ResponseEntity<?> showProductDetails(@RequestParam("id") Long id) {
+    public @ResponseBody ResponseEntity<Object> showProductDetails(@RequestParam("id") Long id) {
         try {
             log.info("Id :: " + id);
             if (id != 0) {
@@ -178,7 +176,7 @@ public class ProductController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @GetMapping("/")
-    public @ResponseBody ResponseEntity<?> getAllProducts() {
+    public @ResponseBody ResponseEntity<Object> getAllProducts() {
         List<Product> products = productService.getAllActiveProducts();
         if (products != null && !products.isEmpty()) return ResponseEntity.ok(products);
         return ResponseEntity.status(204).build();
@@ -193,7 +191,7 @@ public class ProductController {
             @ApiResponse(responseCode = "404", description = "not found",
                     content = @Content)})
     @DeleteMapping("/deleteById")
-    public @ResponseBody ResponseEntity<?> deleteProductById(@Valid @RequestBody Map<String, Object> map) {
+    public @ResponseBody ResponseEntity<Object> deleteProductById(@Valid @RequestBody Map<String, Object> map) {
         try {
             List<Integer> ids = (List<Integer>) map.get("ids");
             List<Long> longList = ids.stream().map(Long::valueOf) //or map to any other type/objects with "e -> new..."

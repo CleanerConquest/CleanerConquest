@@ -123,7 +123,7 @@ public class ProductController {
     @GetMapping("/display/{id}")
     @ResponseBody
     void showImage(@PathVariable("id") Long id, HttpServletResponse response) throws IOException {
-        log.info("Product image been requested Id number :: %d", id);
+        log.info("Product image been requested Id number :: {}", id);
         Optional<Product> product = productService.getProductById(id);
         if (product.isPresent()) {
             response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
@@ -148,7 +148,7 @@ public class ProductController {
     @GetMapping("/details{id}")
     public @ResponseBody ResponseEntity<Object> showProductDetails(@RequestParam("id") Long id) {
         try {
-            log.info("Id :: %d", id);
+            log.info("Id :: {}", id);
             if (id != 0) {
                 Optional<Product> product = productService.getProductById(id);
 

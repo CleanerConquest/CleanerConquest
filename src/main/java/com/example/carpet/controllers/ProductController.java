@@ -71,16 +71,16 @@ public class ProductController {
             byte[] imageData = new byte[0];
             if (file != null && !file.isEmpty()) {
                 String uploadDirectory = request.getServletContext().getRealPath(uploadFolder);
-                log.info("uploadDirectory:: %s", uploadDirectory);
+                log.info("uploadDirectory:: {}", uploadDirectory);
                 String fileName = file.getOriginalFilename();
                 String filePath = Paths.get(uploadDirectory, fileName).toString();
-                log.info("FileName: %s", file.getOriginalFilename());
+                log.info("FileName: {}", file.getOriginalFilename());
                 if (fileName == null || fileName.contains("..")) {
                     return ResponseEntity.badRequest().body("Sorry! Filename contains invalid path sequence " + fileName);
                 }
-                log.info("Name: %s %s", name, filePath);
-                log.info("description: %s", description);
-                log.info("category: %s", category);
+                log.info("Name: {} {}", name, filePath);
+                log.info("description: {}", description);
+                log.info("category: {}", category);
                 File dir = new File(uploadDirectory);
                 if (!dir.exists()) {
                     log.info("Folder Created");
@@ -107,7 +107,7 @@ public class ProductController {
             return new ResponseEntity<>("Product Saved", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            log.info("Exception: {}", e);
+            log.info("Exception: {} {}", e,request);
             return ResponseEntity.badRequest().build();
         }
     }

@@ -26,6 +26,7 @@ import java.util.Optional;
 @CrossOrigin
 @SecurityRequirement(name = "Bearer Authentication")
 public class OrderController {
+    private static final String ZEROS_TIME = " 00:00:00.000000";
     @Autowired
     private OrderServImpl orderServ;
     @Autowired
@@ -142,7 +143,7 @@ public class OrderController {
                     content = @Content)})
     @GetMapping("/countByDate{date}")
     public @ResponseBody ResponseEntity<Object> getOrdersCount(@RequestParam String date) {
-        Timestamp timestamp = Timestamp.valueOf(date + " 00:00:00.000000");
+        Timestamp timestamp = Timestamp.valueOf(date + ZEROS_TIME);
         Long ordersCount = orderServ.getOrdersCount(timestamp);
         if (ordersCount != null && ordersCount != 0)
             return ResponseEntity.ok(ordersCount);
@@ -159,12 +160,13 @@ public class OrderController {
                     content = @Content)})
     @GetMapping("/countUnfinished{date}")
     public @ResponseBody ResponseEntity<Object> getUnfinishedOrdersCount(@RequestParam String date) {
-        Timestamp timestamp = Timestamp.valueOf(date + " 00:00:00.000000");
+        Timestamp timestamp = Timestamp.valueOf(date + ZEROS_TIME);
         Long ordersCount = orderServ.getUnfinishedOrdersCount(timestamp, OrderStatus.COMPLETE);
         if (ordersCount != null && ordersCount != 0)
             return ResponseEntity.ok(ordersCount);
         return ResponseEntity.status(204).build();
     }
+
     @Operation(summary = "Money Gained From Finished Orders Before Specific Date")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Done successfully"),
@@ -175,7 +177,7 @@ public class OrderController {
                     content = @Content)})
     @GetMapping("/sumFinishedByDate{date}")
     public @ResponseBody ResponseEntity<Object> getFinishedOrdersSum(@RequestParam String date) {
-        Timestamp timestamp = Timestamp.valueOf(date + " 00:00:00.000000");
+        Timestamp timestamp = Timestamp.valueOf(date + ZEROS_TIME);
         Float sum = orderServ.getSumDoneOrdersPrice(timestamp);
         if (sum != null && sum != 0)
             return ResponseEntity.ok(sum);
@@ -192,7 +194,7 @@ public class OrderController {
                     content = @Content)})
     @GetMapping("/sumUnfinishedByDate{date}")
     public @ResponseBody ResponseEntity<Object> getUnfinishedOrdersSum(@RequestParam String date) {
-        Timestamp timestamp = Timestamp.valueOf(date + " 00:00:00.000000");
+        Timestamp timestamp = Timestamp.valueOf(date + ZEROS_TIME);
         Float sum = orderServ.sumUnfinishedOrdersPrice(timestamp);
         if (sum != null && sum != 0)
             return ResponseEntity.ok(sum);

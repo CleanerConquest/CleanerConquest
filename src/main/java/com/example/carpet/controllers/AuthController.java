@@ -41,6 +41,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class AuthController {
+    private static final String ROLE_NOT_FOUND = "Error: Role is not found.";
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -88,11 +89,11 @@ public class AuthController {
                 userDetails.getUsername(), userDetails.getEmail(), roles));
     }
 
-    @Operation(summary = "Sign Up",description = "For role use admin for admin,mod for moderator and \"\" for user")
+    @Operation(summary = "Sign Up", description = "For role use admin for admin,mod for moderator and \"\" for user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User registered successfully!"),
             @ApiResponse(responseCode = "400", description = "Error: Username/Email is already taken!\nError:Role is not found!",
-            content = @Content),
+                    content = @Content),
             @ApiResponse(responseCode = "401", description = "Unauthorized",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "not found",
@@ -115,24 +116,24 @@ public class AuthController {
 
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(RoleEnum.USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin" -> {
                         Role adminRole = roleRepository.findByName(RoleEnum.ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                                .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
                         roles.add(adminRole);
                     }
                     case "mod" -> {
                         Role modRole = roleRepository.findByName(RoleEnum.MODERATOR)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                                .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
                         roles.add(modRole);
                     }
                     default -> {
                         Role userRole = roleRepository.findByName(RoleEnum.USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                                .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
                         roles.add(userRole);
                     }
                 }

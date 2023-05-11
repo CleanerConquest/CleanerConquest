@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @NoArgsConstructor
 public class EmailService {
-    private final static String EMAIL_SUBJECT = "Your Order Is Done";
+    private static final String EMAIL_SUBJECT = "Your Order Is Done";
     private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
     @Autowired
     private JavaMailSender javaMailSender;

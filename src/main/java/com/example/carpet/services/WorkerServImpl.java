@@ -59,7 +59,7 @@ public class WorkerServImpl implements WorkerServ {
         Worker worker = workerRepository.findById(id).get();
         worker.setUnemploymentAt(Timestamp.valueOf(LocalDateTime.now()));
         workerRepository.save(worker);
-        List<Order> orders = orderRepository.findByWorkerAndOrderStatusIn(worker, List.of(new OrderStatus[]{OrderStatus.WAITING, OrderStatus.IN_TREATMENT}));
+        List<Order> orders = orderRepository.findByWorkerAndOrderStatusIn(worker, List.of(OrderStatus.WAITING, OrderStatus.IN_TREATMENT));
         if (orders != null) {
             for (Order order :
                     orders) {

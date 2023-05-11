@@ -28,7 +28,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -68,30 +71,25 @@ public class ProductController {
             byte[] imageData = new byte[0];
             if (file != null && !file.isEmpty()) {
                 String uploadDirectory = request.getServletContext().getRealPath(uploadFolder);
-                log.info("uploadDirectory:: " + uploadDirectory);
+                log.info("uploadDirectory:: %s", uploadDirectory);
                 String fileName = file.getOriginalFilename();
                 String filePath = Paths.get(uploadDirectory, fileName).toString();
-                log.info("FileName: " + file.getOriginalFilename());
+                log.info("FileName: %s", file.getOriginalFilename());
                 if (fileName == null || fileName.contains("..")) {
                     return ResponseEntity.badRequest().body("Sorry! Filename contains invalid path sequence " + fileName);
                 }
-                log.info("Name: " + name + " " + filePath);
-                log.info("description: " + description);
-                log.info("category: " + category);
-                try {
-                    File dir = new File(uploadDirectory);
-                    if (!dir.exists()) {
-                        log.info("Folder Created");
-                        if (!dir.mkdirs()) return ResponseEntity.badRequest().build();
-                    }
-                    // Save the file locally
-                    BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(filePath));
-                    stream.write(file.getBytes());
-                    stream.close();
-                } catch (Exception e) {
-                    log.info("in catch");
-                    e.printStackTrace();
+                log.info("Name: %s %s", name, filePath);
+                log.info("description: %s", description);
+                log.info("category: %s", category);
+                File dir = new File(uploadDirectory);
+                if (!dir.exists()) {
+                    log.info("Folder Created");
+                    if (!dir.mkdirs()) return ResponseEntity.badRequest().build();
                 }
+                // Save the file locally
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(filePath));
+                stream.write(file.getBytes());
+                stream.close();
                 imageData = file.getBytes();
             }
             Product product = Product.builder()
@@ -105,11 +103,11 @@ public class ProductController {
                     .isDeleted(false)
                     .build();
             productService.saveProduct(product);
-            log.info("HttpStatus===" + new ResponseEntity<>(HttpStatus.OK));
+            log.info("HttpStatus=== {}", new ResponseEntity<>(HttpStatus.OK));
             return new ResponseEntity<>("Product Saved", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            log.info("Exception: " + e);
+            log.info("Exception: {}", e);
             return ResponseEntity.badRequest().build();
         }
     }
@@ -125,7 +123,7 @@ public class ProductController {
     @GetMapping("/display/{id}")
     @ResponseBody
     void showImage(@PathVariable("id") Long id, HttpServletResponse response) throws IOException {
-        log.info("Product image been requested Id number :: " + id);
+        log.info("Product image been requested Id number :: %d", id);
         Optional<Product> product = productService.getProductById(id);
         if (product.isPresent()) {
             response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
@@ -137,10 +135,11 @@ public class ProductController {
             response.getOutputStream().close();
         }
     }
+
     @Operation(summary = "Get Product Details")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Done successfully",
-            content = @Content(schema = @Schema(implementation = Product.class))),
+                    content = @Content(schema = @Schema(implementation = Product.class))),
             @ApiResponse(responseCode = "204", description = "Wrong Product ID"),
             @ApiResponse(responseCode = "401", description = "Unauthorized",
                     content = @Content),
@@ -149,11 +148,11 @@ public class ProductController {
     @GetMapping("/details{id}")
     public @ResponseBody ResponseEntity<Object> showProductDetails(@RequestParam("id") Long id) {
         try {
-            log.info("Id :: " + id);
+            log.info("Id :: %d", id);
             if (id != 0) {
                 Optional<Product> product = productService.getProductById(id);
 
-                log.info("products :: " + product);
+                log.info("products :: {}", product);
                 if (product.isPresent()) {
 
                     return ResponseEntity.ok(product);
@@ -166,6 +165,7 @@ public class ProductController {
             return ResponseEntity.status(204).build();
         }
     }
+
     @Operation(summary = "Get All The Available Products")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Done successfully",

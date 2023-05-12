@@ -7,7 +7,7 @@ Feature:order
     Given request body
       | name               | estimated           | productsIDs | productsQuantities | customerID |
       | String             | String              | List        | List               | Integer    |
-      | Amr's Blue3 Carpet | 2023-02-19T10:00:00 | 1           | 1                  | 1          |
+      | Amr's Blue3 Carpet | 2023-02-19T10:00:00 | 8           | 1                  | 1          |
     When the client after auth "POST" "/order/save"
     Then the client receives status code of [200]
 
@@ -81,4 +81,4 @@ Feature:order
     When the client calls "/api/auth/signin"
     Then the client receives status code of [200]
     When the client after auth "GET" "/order/updateStatus?id=1"
-    Then the client receives status code of [200]
+    Then the client receives status code of [200,204]

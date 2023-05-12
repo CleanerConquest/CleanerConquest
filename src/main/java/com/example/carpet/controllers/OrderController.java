@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/order")
-@CrossOrigin
+@CrossOrigin(origins = {"http://localhost:9090","http://localhost:3000"},maxAge=3600)
 @SecurityRequirement(name = "Bearer Authentication")
 public class OrderController {
     private static final String ZEROS_TIME = " 00:00:00.000000";

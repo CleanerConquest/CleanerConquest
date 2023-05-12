@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = {"http://localhost:9090","http://localhost:3000"},maxAge=3600)
 public class AuthController {
     private static final String ROLE_NOT_FOUND = "Error: Role is not found.";
     @Autowired

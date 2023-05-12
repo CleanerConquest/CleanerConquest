@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/product")
-@CrossOrigin
+@CrossOrigin(origins = {"http://localhost:9090","http://localhost:3000"},maxAge=3600)
 @SecurityRequirement(name = "Bearer Authentication")
 public class ProductController {
 

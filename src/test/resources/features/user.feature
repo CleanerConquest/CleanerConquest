@@ -25,14 +25,6 @@ Feature: user
     When the client calls "/api/auth/signup"
     Then the client receives status code of [400]
 
-  Scenario: sign up admin with new username
-    Given request body
-      | username | password | email               |
-      | String   | String   | String              |
-      | amrtest  | test123  | akurdi202@gmail.com |
-    When the client calls "/api/auth/signup"
-    Then the client receives status code of [200]
-
 
   Scenario: admin refresh the jwt
     Given 'amr'|'test123'

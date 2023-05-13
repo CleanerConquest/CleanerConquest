@@ -89,63 +89,6 @@ public class AuthController {
                 userDetails.getUsername(), userDetails.getEmail(), roles));
     }
 
-    @Operation(summary = "Sign Up", description = "For role use admin for admin,mod for moderator and \"\" for user")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User registered successfully!"),
-            @ApiResponse(responseCode = "400", description = "Error: Username/Email is already taken!\nError:Role is not found!",
-                    content = @Content),
-            @ApiResponse(responseCode = "401", description = "Unauthorized",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "not found",
-                    content = @Content)})
-    @PostMapping("/signup")
-    public ResponseEntity<Object> registerUser(@Valid @RequestBody SignupReq signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity.badRequest().body("Error: Username is already taken!");
-        }
-
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity.badRequest().body("Error: Email is already in use!");
-        }
-
-        User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
-
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
-
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName(RoleEnum.USER)
-                    .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin" -> {
-                        Role adminRole = roleRepository.findByName(RoleEnum.ADMIN)
-                                .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
-                        roles.add(adminRole);
-                    }
-                    case "mod" -> {
-                        Role modRole = roleRepository.findByName(RoleEnum.MODERATOR)
-                                .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
-                        roles.add(modRole);
-                    }
-                    default -> {
-                        Role userRole = roleRepository.findByName(RoleEnum.USER)
-                                .orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
-                        roles.add(userRole);
-                    }
-                }
-            });
-        }
-
-        user.setRoles(roles);
-        userRepository.save(user);
-
-        return ResponseEntity.ok("User registered successfully!");
-    }
-
     @Operation(summary = "Refresh JWT By the refresh token")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Done",

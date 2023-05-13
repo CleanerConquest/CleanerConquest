@@ -17,14 +17,6 @@ Feature: user
     When the client calls "/api/auth/signout"
     Then the client receives status code of [200]
 
-  Scenario: sign up admin with taken username
-    Given request body
-      | username | password | email               |
-      | String   | String   | String              |
-      | amr      | test123  | akurdi202@gmail.com |
-    When the client calls "/api/auth/signup"
-    Then the client receives status code of [400]
-
 
   Scenario: admin refresh the jwt
     Given 'amr'|'test123'

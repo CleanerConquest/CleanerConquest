@@ -76,9 +76,16 @@ Feature:order
     Then the client receives status code of [200]
 
 
-  Scenario: admin sign in with right credentials and tries to update order status
+  Scenario: admin sign in with right credentials and tries to update order status for first time
     Given 'amr'|'test123'
     When the client calls "/api/auth/signin"
     Then the client receives status code of [200]
-    When the client after auth "GET" "/order/updateStatus?id=1"
+    When the client after auth "GET" "/order/updateStatus?id=200"
+    Then the client receives status code of [200,204]
+
+  Scenario: admin sign in with right credentials and tries to update order status for second time
+    Given 'amr'|'test123'
+    When the client calls "/api/auth/signin"
+    Then the client receives status code of [200]
+    When the client after auth "GET" "/order/updateStatus?id=200"
     Then the client receives status code of [200,204]

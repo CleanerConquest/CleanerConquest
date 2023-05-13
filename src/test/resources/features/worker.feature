@@ -69,7 +69,7 @@ Feature:worker
     Given 'amr'|'test123'
     When the client calls "/api/auth/signin"
     Then the client receives status code of [200]
-    When the client after auth "DELETE" "/worker/unemploy?id=1"
+    When the client after auth "DELETE" "/worker/unemploy?id=13"
     Then the client receives status code of [200,204]
 
 

@@ -8,15 +8,26 @@ import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.FormBodyPart;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.util.EntityUtils;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -64,8 +75,54 @@ public class StepDefs extends CarpetApplicationTests {
     }
 
     @When("the client after auth {string} {string}")
-    public void callAfterAuth(String type, String endpoint) {
-        sendRequest(endpoint, type, type.equals("GET") ? null : lastRequest);
+    public void callAfterAuth(String type, String endpoint) throws IOException, URISyntaxException {
+        if (endpoint.equalsIgnoreCase("/product/save"))
+            sendImageProduct(endpoint);
+        else
+            sendRequest(endpoint, type, type.equals("GET") ? null : lastRequest);
+    }
+
+    private void sendImageProduct(String endpoint) throws IOException, URISyntaxException {
+        HttpClient httpclient = new DefaultHttpClient();
+        httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+
+        HttpPost httppost = new HttpPost(baseUrl + endpoint);
+        File file = new File(this.getClass().getResource("../../../image.png").toURI());
+
+        MultipartEntity mpEntity = new MultipartEntity();
+        ContentBody cbFile = new FileBody(file, "image/jpeg");
+
+        FormBodyPart name = new FormBodyPart("name", new StringBody("Test"));
+        FormBodyPart category = new FormBodyPart("category", new StringBody("Test"));
+        FormBodyPart description = new FormBodyPart("description", new StringBody("Test"));
+        FormBodyPart productUnit = new FormBodyPart("productUnit", new StringBody("kg"));
+        FormBodyPart priceUnit = new FormBodyPart("priceUnit", new StringBody("nis"));
+        FormBodyPart price = new FormBodyPart("price", new StringBody(Double.toString(10.0)));
+
+
+        mpEntity.addPart("file", cbFile);
+        mpEntity.addPart(name);
+        mpEntity.addPart(category);
+        mpEntity.addPart(description);
+        mpEntity.addPart(productUnit);
+        mpEntity.addPart(priceUnit);
+        mpEntity.addPart(price);
+
+        httppost.addHeader("Authorization", "Bearer " + jwt);
+        httppost.setEntity(mpEntity);
+        System.out.println("executing request " + httppost.getRequestLine());
+        HttpResponse response = httpclient.execute(httppost);
+        HttpEntity resEntity = response.getEntity();
+
+        System.out.println(response.getStatusLine());
+        if (resEntity != null) {
+            System.out.println(EntityUtils.toString(resEntity));
+        }
+        if (resEntity != null) {
+            resEntity.consumeContent();
+        }
+
+        httpclient.getConnectionManager().shutdown();
     }
 
     private void sendRequest(String endpoint, String type, String jsonBody) {

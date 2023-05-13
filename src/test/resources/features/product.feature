@@ -51,3 +51,9 @@ Feature:product
     When the client after auth "POST" "/product/saveJson"
     Then the client receives status code of [200]
 
+Scenario: admin sign in with right credentials and tries to add a product with image
+  Given 'amr'|'test123'
+  When the client calls "/api/auth/signin"
+  Then the client receives status code of [200]
+  When the client after auth "POST" "/product/save"
+  Then the client receives status code of [200]
